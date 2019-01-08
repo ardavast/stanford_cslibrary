@@ -19,6 +19,7 @@ void append(struct node **a, struct node **b);
 void frontBackSplit(struct node *head, struct node **front, struct node **back);
 void removeDuplicates(struct node *head);
 void moveNode(struct node **dst, struct node **src);
+void alternatingSplit(struct node *head, struct node **a, struct node **b);
 
 int
 main(void)
@@ -238,4 +239,19 @@ void moveNode(struct node **dst, struct node **src)
 
 void alternatingSplit(struct node *head, struct node **a, struct node **b)
 {
+	struct node *node = head;
+
+	for (;;) {
+		if (node == NULL) {
+			break;
+		}
+		push(a, node->data);
+		node = node->next;
+
+		if (node == NULL) {
+			break;
+		}
+		push(b, node->data);
+		node = node->next;
+	}
 }
