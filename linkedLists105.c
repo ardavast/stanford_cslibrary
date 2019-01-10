@@ -24,10 +24,6 @@ void alternatingSplit(struct node *head, struct node **a, struct node **b);
 int
 main(void)
 {
-	struct node *head = NULL;
-
-	print(head);
-
 	return (EXIT_SUCCESS);
 }
 
@@ -240,18 +236,25 @@ void moveNode(struct node **dst, struct node **src)
 void alternatingSplit(struct node *head, struct node **a, struct node **b)
 {
 	struct node *node = head;
+	struct node *aHead = NULL, *bHead = NULL;
+	struct node **aTail = &aHead, **bTail = &bHead;
 
 	for (;;) {
 		if (node == NULL) {
 			break;
 		}
-		push(a, node->data);
+		push(aTail, node->data);
+		aTail = &((*aTail)->next);
 		node = node->next;
 
 		if (node == NULL) {
 			break;
 		}
-		push(b, node->data);
+		push(bTail, node->data);
+		bTail = &((*bTail)->next);
 		node = node->next;
 	}
+
+	*a = aHead;
+	*b = bHead;
 }
