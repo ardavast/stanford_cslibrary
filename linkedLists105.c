@@ -22,6 +22,7 @@ void moveNode(struct node **dst, struct node **src);
 void alternatingSplit(struct node *head, struct node **a, struct node **b);
 struct node *shuffleMerge(struct node *a, struct node *b);
 struct node *sortedMerge(struct node *a, struct node *b);
+struct node *sortedIntersect(struct node *a, struct node *b);
 
 int
 main(void)
@@ -308,6 +309,26 @@ struct node *sortedMerge(struct node *a, struct node *b)
 			tail = &((*tail)->next);
 		} else {
 			break;
+		}
+	}
+
+	return (head);
+}
+
+struct node *sortedIntersect(struct node *a, struct node *b)
+{
+	struct node *head = NULL;
+	struct node **tail = &head;
+
+	while (a != NULL && b != NULL) {
+		if (a->data < b->data) {
+			a = a->next;
+		} else if (a->data > b->data) {
+			b = b->next;
+		} else {
+			push(tail, a->data);
+			a = a->next;
+			b = b->next;
 		}
 	}
 
