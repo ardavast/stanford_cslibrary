@@ -20,6 +20,7 @@ void frontBackSplit(struct node *head, struct node **front, struct node **back);
 void removeDuplicates(struct node *head);
 void moveNode(struct node **dst, struct node **src);
 void alternatingSplit(struct node *head, struct node **a, struct node **b);
+struct node *shuffleMerge(struct node *a, struct node *b);
 
 int
 main(void)
@@ -257,4 +258,26 @@ void alternatingSplit(struct node *head, struct node **a, struct node **b)
 
 	*a = aHead;
 	*b = bHead;
+}
+
+struct node *shuffleMerge(struct node *a, struct node *b)
+{
+	struct node *head = NULL;
+	struct node **tail = &head;
+
+	while (a != NULL || b != NULL) {
+		if (a != NULL) {
+			push(tail, a->data);
+			tail = &((*tail)->next);
+			a = a->next;
+		}
+
+		if (b != NULL) {
+			push(tail, b->data);
+			tail = &((*tail)->next);
+			b = b->next;
+		}
+	}
+
+	return (head);
 }
