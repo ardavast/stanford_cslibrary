@@ -22,6 +22,7 @@ void moveNode(struct node **dst, struct node **src);
 void alternatingSplit(struct node *head, struct node **a, struct node **b);
 struct node *shuffleMerge(struct node *a, struct node *b);
 struct node *sortedMerge(struct node *a, struct node *b);
+void mergeSort(struct node **head);
 struct node *sortedIntersect(struct node *a, struct node *b);
 
 int
@@ -313,6 +314,22 @@ struct node *sortedMerge(struct node *a, struct node *b)
 	}
 
 	return (head);
+}
+
+void mergeSort(struct node **head)
+{
+	struct node *a, *b;
+
+	if (*head == NULL || (*head)->next == NULL) {
+		return;
+	}
+
+	frontBackSplit(*head, &a, &b);
+
+	mergeSort(&a);
+	mergeSort(&b);
+
+	*head = sortedMerge(a, b);
 }
 
 struct node *sortedIntersect(struct node *a, struct node *b)
