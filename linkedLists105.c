@@ -21,6 +21,7 @@ void removeDuplicates(struct node *head);
 void moveNode(struct node **dst, struct node **src);
 void alternatingSplit(struct node *head, struct node **a, struct node **b);
 struct node *shuffleMerge(struct node *a, struct node *b);
+struct node *sortedMerge(struct node *a, struct node *b);
 
 int
 main(void)
@@ -268,14 +269,45 @@ struct node *shuffleMerge(struct node *a, struct node *b)
 	while (a != NULL || b != NULL) {
 		if (a != NULL) {
 			push(tail, a->data);
-			tail = &((*tail)->next);
 			a = a->next;
+			tail = &((*tail)->next);
 		}
 
 		if (b != NULL) {
 			push(tail, b->data);
-			tail = &((*tail)->next);
 			b = b->next;
+			tail = &((*tail)->next);
+		}
+	}
+
+	return (head);
+}
+
+struct node *sortedMerge(struct node *a, struct node *b)
+{
+	struct node *head = NULL;
+	struct node **tail = &head;
+
+	for (;;) {
+		if (a != NULL && b != NULL) {
+			if (a->data < b->data) {
+				push(tail, a->data);
+				a = a->next;
+			} else {
+				push(tail, b->data);
+				b = b->next;
+			}
+			tail = &((*tail)->next);
+		} else if (a != NULL) {
+			push(tail, a->data);
+			a = a->next;
+			tail = &((*tail)->next);
+		} else if (b != NULL) {
+			push(tail, b->data);
+			b = b->next;
+			tail = &((*tail)->next);
+		} else {
+			break;
 		}
 	}
 
