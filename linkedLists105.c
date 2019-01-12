@@ -1,3 +1,8 @@
+/*
+ * Linked List Problems
+ * http://cslibrary.stanford.edu/105/
+ */
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
