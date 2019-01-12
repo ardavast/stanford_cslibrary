@@ -11,7 +11,7 @@ void print(struct node *head);
 void push(struct node **head, int data);
 int count(struct node *head, int data);
 int getNth(struct node *head, int n);
-void delete(struct node **head);
+void deleteList(struct node **head);
 int pop(struct node **head);
 void sortedInsert(struct node **head, struct node *new);
 void insertSort(struct node **head);
@@ -24,19 +24,14 @@ struct node *shuffleMerge(struct node *a, struct node *b);
 struct node *sortedMerge(struct node *a, struct node *b);
 void mergeSort(struct node **head);
 struct node *sortedIntersect(struct node *a, struct node *b);
-
-int
-main(void)
-{
-	return (EXIT_SUCCESS);
-}
+void reverse(struct node **head);
 
 void print(struct node *head)
 {
 	struct node *node;
 
 	for (node = head; node != NULL; node = node->next) {
-		printf("%p %d %p\n", (void *)node, node->data, (void *)node->next);
+		printf("%d\n", node->data);
 	}
 }
 
@@ -80,7 +75,7 @@ int getNth(struct node *head, int n)
 	assert(0);
 }
 
-void delete(struct node **head)
+void deleteList(struct node **head)
 {
 	struct node *node = *head;
 	struct node *next;
@@ -350,4 +345,20 @@ struct node *sortedIntersect(struct node *a, struct node *b)
 	}
 
 	return (head);
+}
+
+void reverse(struct node **head)
+{
+	struct node *node = *head;
+	struct node *prev = NULL;
+	struct node *next;
+
+	while (node != NULL) {
+		next = node->next;
+		node->next = prev;
+		prev = node;
+		node = next;
+	}
+
+	*head = prev;
 }
