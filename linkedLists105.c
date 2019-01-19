@@ -1,6 +1,6 @@
 /*
  * Linked List Problems
- * http://cslibrary.stanford.edu/105/
+ * http://cslibrary.stanford.edu/105
  */
 
 #include <assert.h>

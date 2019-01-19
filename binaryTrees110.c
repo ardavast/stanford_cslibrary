@@ -1,6 +1,15 @@
+/*
+ * Binary Trees
+ * http://cslibrary.stanford.edu/110
+ */
+
 #include <assert.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#define min(x, y) ((x) < (y) ? (x) : (y))
+#define max(x, y) ((x) > (y) ? (x) : (y))
 
 struct node {
 	int data;
@@ -14,6 +23,7 @@ void insert(struct node **node, int data);
 int size(struct node *node);
 int maxDepth(struct node *node);
 int minValue(struct node *node);
+int maxValue(struct node *node);
 void printTree(struct node *node);
 void printPostorder(struct node *node);
 int hasPathSum(struct node *node, int sum);
@@ -22,6 +32,10 @@ void printPathsRecur(struct node *node, int path[], int pathLen);
 void mirror(struct node *node);
 void doubleTree(struct node *node);
 int sameTree(struct node *a, struct node *b);
+int countTrees(int nKeys);
+int isBST1(struct node *node);
+int isBST2(struct node *node);
+int isBSTUtil(struct node *node, int min, int max);
 
 struct node *newNode(int data)
 {
@@ -96,13 +110,32 @@ int maxDepth(struct node *node)
 
 int minValue(struct node *node)
 {
-	assert(node != NULL);
+	int minLeft;
+	int minRight;
 
-	if (node->left != NULL) {
-		return minValue(node->left);
-	} else {
-		return (node->data);
+	if (node == NULL) {
+		return INT_MAX;
 	}
+
+	minLeft = minValue(node->left);
+	minRight = minValue(node->right);
+
+	return (min(node->data, min(minLeft, minRight)));
+}
+
+int maxValue(struct node *node)
+{
+	int maxLeft;
+	int maxRight;
+
+	if (node == NULL) {
+		return INT_MIN;
+	}
+
+	maxLeft = maxValue(node->left);
+	maxRight = maxValue(node->right);
+
+	return (max(node->data, max(maxLeft, maxRight)));
 }
 
 void printTree(struct node *node)
@@ -210,4 +243,58 @@ int sameTree(struct node *a, struct node *b)
 	} else {
 		return (0);
 	}
+}
+
+int countTrees(int nKeys)
+{
+	int i;
+	int result = 0;
+
+	assert(nKeys >= 0);
+
+	if (nKeys == 0 || nKeys == 1) {
+		return (1);
+	}
+
+	for (i = 0; i < nKeys; i++) {
+		result += countTrees(i) * countTrees(nKeys - 1 - i);
+	}
+
+	return (result);
+}
+
+int isBST1(struct node *node)
+{
+	if (node->left != NULL && minValue(node->left) > node->data) {
+		return (0);
+	}
+
+	if (node->right != NULL && maxValue(node->right) <= node->data) {
+		return (0);
+	}
+
+	if (!isBST1(node->left) || !isBST1(node->right)) {
+		return (0);
+	}
+
+	return (1);
+}
+
+int isBST2(struct node *node)
+{
+	return isBSTUtil(node, INT_MIN, INT_MAX);
+}
+
+int isBSTUtil(struct node *node, int min, int max)
+{
+	if (node == NULL) {
+		return (1);
+	}
+
+	if (node->data < min || node->data > max) {
+		return (0);
+	}
+
+	return (isBSTUtil(node->left, min, node->data) &&
+		isBSTUtil(node->right, node->data + 1, max));
 }
